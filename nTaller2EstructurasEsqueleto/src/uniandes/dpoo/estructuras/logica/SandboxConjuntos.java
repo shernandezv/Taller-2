@@ -1,6 +1,9 @@
 package uniandes.dpoo.estructuras.logica;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 import java.util.NavigableSet;
 import java.util.TreeSet;
@@ -39,7 +42,8 @@ public class SandboxConjuntos
      */
     public List<String> getCadenasComoLista( )
     {
-        return null;
+    	List<String> lista = new ArrayList<>(this.arbolCadenas); 
+        return lista;
     }
 
     /**
@@ -48,7 +52,8 @@ public class SandboxConjuntos
      */
     public List<String> getCadenasComoListaInvertida( )
     {
-        return null;
+    	List<String> lista = new ArrayList<>(this.arbolCadenas.descendingSet());
+        return lista;
     }
 
     /**
@@ -59,7 +64,11 @@ public class SandboxConjuntos
      */
     public String getPrimera( )
     {
-        return null;
+    	if (this.arbolCadenas.isEmpty()) {
+            return null;
+    	}
+    	String menor = this.arbolCadenas.first();
+        return menor;
     }
 
     /**
@@ -70,7 +79,11 @@ public class SandboxConjuntos
      */
     public String getUltima( )
     {
-        return null;
+    	if (this.arbolCadenas.isEmpty()) {
+            return null;
+    	}
+    	String mayor = this.arbolCadenas.last();
+        return mayor;
     }
 
     /**
@@ -80,7 +93,15 @@ public class SandboxConjuntos
      */
     public Collection<String> getSiguientes( String cadena )
     {
-        return null;
+    	NavigableSet<String> set = new TreeSet<String>();
+    	Iterator<String> iterador = this.arbolCadenas.iterator();
+    	while (iterador.hasNext()) {
+    		String cadenaActual = iterador.next();
+    		if (cadenaActual.compareTo(cadena) >= 0) {
+    			set.add(cadenaActual);
+    		}
+    	}
+        return set;
     }
 
     /**
@@ -89,7 +110,8 @@ public class SandboxConjuntos
      */
     public int getCantidadCadenas( )
     {
-        return -1;
+    	
+        return this.arbolCadenas.size();
     }
 
     /**
@@ -101,7 +123,7 @@ public class SandboxConjuntos
      */
     public void agregarCadena( String cadena )
     {
-
+    	this.arbolCadenas.add(cadena);
     }
 
     /**
@@ -110,7 +132,7 @@ public class SandboxConjuntos
      */
     public void eliminarCadena( String cadena )
     {
-
+    	this.arbolCadenas.remove(cadena);
     }
 
     /**
@@ -119,7 +141,15 @@ public class SandboxConjuntos
      */
     public void eliminarCadenaSinMayusculasOMinusculas( String cadena )
     {
-
+    	Iterator<String> iterador = this.arbolCadenas.iterator();
+    	boolean eliminado = false;
+    	while (iterador.hasNext() && eliminado == false) {
+    		String cadenaActual = iterador.next();
+    		if (cadenaActual.equalsIgnoreCase(cadena)) {
+    			iterador.remove();;
+    			eliminado = true;
+    		}
+    	}
     }
 
     /**
@@ -127,7 +157,7 @@ public class SandboxConjuntos
      */
     public void eliminarPrimera( )
     {
-
+    	this.arbolCadenas.removeFirst();
     }
 
     /**
@@ -138,7 +168,13 @@ public class SandboxConjuntos
      */
     public void reiniciarConjuntoCadenas( List<Object> objetos )
     {
-
+    	NavigableSet<String> set = new TreeSet<String>();
+    	Iterator<Object> iterador = objetos.iterator();
+    	while (iterador.hasNext()){
+    		set.add(iterador.next().toString());
+    	}
+    	this.arbolCadenas = set;
+    	
     }
 
     /**
@@ -146,16 +182,23 @@ public class SandboxConjuntos
      * 
      * Note que esta operación podría modificar el órden de los elementos dentro del conjunto.
      */
-    public void volverMayusculas( )
+    public void volverMayusculas() 
     {
+        NavigableSet<String> set = new TreeSet<>();
+        for (String cadena : this.arbolCadenas) {
+            set.add(cadena.toUpperCase());
+        }
+        this.arbolCadenas = set;
     }
 
     /**
      * Construye un árbol de cadenas donde todas las cadenas están organizadas de MAYOR a MENOR.
      */
-    public TreeSet<String> invertirCadenas( )
+    public TreeSet<String> invertirCadenas() 
     {
-        return null;
+    	TreeSet<String> invertido = new TreeSet<>(Comparator.reverseOrder());
+        invertido.addAll(this.arbolCadenas);
+        return invertido;
     }
 
     /**
@@ -165,7 +208,16 @@ public class SandboxConjuntos
      */
     public boolean compararElementos( String[] otroArreglo )
     {
-        return false;
+    	boolean contieneTodos = true;
+    	int i = 0;
+    	while (i < otroArreglo.length && contieneTodos == true) {
+    		String cadena = otroArreglo[i];
+    		if (!this.arbolCadenas.contains(cadena)) {
+    			contieneTodos = false;
+    		}
+    		i +=1;
+    	}
+        return contieneTodos;
     }
-
+    
 }

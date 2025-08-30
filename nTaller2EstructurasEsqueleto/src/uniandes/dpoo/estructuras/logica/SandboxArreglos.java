@@ -144,14 +144,14 @@ public class SandboxArreglos
     	int indice = 0;
         for (int i = 0; i < this.arregloCadenas.length; i++) {
             if (this.arregloCadenas[i] != cadena) {
-                contador++;
+                contador += 1;
             }
         }
         String[] nuevoArreglo = new String[contador];
         for (int i = 0; i < this.arregloCadenas.length; i++) {
             if (this.arregloCadenas[i] != cadena) {
                 nuevoArreglo[indice] = this.arregloCadenas[i];
-                indice++;
+                indice += 1;
             }
         }
         this.arregloCadenas = nuevoArreglo;
@@ -198,7 +198,7 @@ public class SandboxArreglos
         for (int i = 0; i < this.arregloEnteros.length; i++) {
             if (i != posicion) {
                 nuevoArreglo[indice] = this.arregloEnteros[i];
-                indice++;
+                indice += 1;
             }
         }
         this.arregloEnteros = nuevoArreglo;
@@ -276,7 +276,6 @@ public class SandboxArreglos
     		if (this.arregloEnteros[i] == valor){
     			contador += 1;
     		}
-    		
     	}
         return contador;
     }
@@ -422,7 +421,6 @@ public class SandboxArreglos
     		}
     		indice += 1;
     	}
-    	
         return  sonIdenticos;
     }
 
