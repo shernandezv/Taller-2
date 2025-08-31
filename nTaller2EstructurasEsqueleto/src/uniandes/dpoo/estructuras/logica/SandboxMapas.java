@@ -1,9 +1,14 @@
 package uniandes.dpoo.estructuras.logica;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Esta clase tiene un conjunto de métodos para practicar operaciones sobre mapas.
@@ -41,7 +46,9 @@ public class SandboxMapas
      */
     public List<String> getValoresComoLista( )
     {
-        return null;
+    	List<String> lista = new ArrayList<String>(this.mapaCadenas.values());
+    	Collections.sort(lista);
+        return lista;
     }
 
     /**
@@ -50,7 +57,9 @@ public class SandboxMapas
      */
     public List<String> getLlavesComoListaInvertida( )
     {
-        return null;
+    	List<String> lista = new ArrayList<String>(this.mapaCadenas.keySet());
+    	Collections.sort(lista, Collections.reverseOrder());
+        return lista;
     }
 
     /**
@@ -61,7 +70,10 @@ public class SandboxMapas
      */
     public String getPrimera( )
     {
-        return null;
+    	if (this.mapaCadenas.isEmpty()) {
+            return null;
+        }
+        return Collections.min(this.mapaCadenas.keySet());
     }
 
     /**
@@ -72,7 +84,10 @@ public class SandboxMapas
      */
     public String getUltima( )
     {
-        return null;
+    	if (this.mapaCadenas.isEmpty()) {
+            return null;
+        }
+        return Collections.max(this.mapaCadenas.keySet());
     }
 
     /**
@@ -83,7 +98,11 @@ public class SandboxMapas
      */
     public Collection<String> getLlaves( )
     {
-        return null;
+    	List<String> lista = new ArrayList<String>();
+    	for (String llave: this.mapaCadenas.keySet()) {
+    		lista.add(llave.toUpperCase());
+    	}
+        return lista;
     }
 
     /**
@@ -92,7 +111,8 @@ public class SandboxMapas
      */
     public int getCantidadCadenasDiferentes( )
     {
-        return -1;
+    	Set<String> conjunto = new HashSet<>(this.mapaCadenas.values());
+        return conjunto.size();
     }
 
     /**
@@ -104,7 +124,8 @@ public class SandboxMapas
      */
     public void agregarCadena( String cadena )
     {
-
+    	this.mapaCadenas.put(new StringBuilder(cadena).reverse().toString(), cadena);
+    	
     }
 
     /**
@@ -113,7 +134,7 @@ public class SandboxMapas
      */
     public void eliminarCadenaConLLave( String llave )
     {
-
+    	this.mapaCadenas.remove(llave);
     }
 
     /**
@@ -122,7 +143,15 @@ public class SandboxMapas
      */
     public void eliminarCadenaConValor( String valor )
     {
-
+    	Iterator<Map.Entry<String, String>> iterador = this.mapaCadenas.entrySet().iterator();
+    	boolean eliminado = false;
+        while (iterador.hasNext() && eliminado == false) {
+            Map.Entry<String, String> entrada = iterador.next();
+            if (entrada.getValue().equals(valor)) {
+                iterador.remove();
+                eliminado = true;
+            }
+        }
     }
 
     /**
@@ -133,7 +162,13 @@ public class SandboxMapas
      */
     public void reiniciarMapaCadenas( List<Object> objetos )
     {
-
+    	Map<String, String> nuevoMapa = new HashMap<String,String>();
+    	Iterator<Object> iterador = objetos.iterator();
+    	while (iterador.hasNext()) {
+    		String valor = iterador.next().toString();
+    		nuevoMapa.put(new StringBuilder(valor).reverse().toString(), valor);
+    	}
+    	this.mapaCadenas = nuevoMapa;
     }
 
     /**
@@ -141,7 +176,14 @@ public class SandboxMapas
      */
     public void volverMayusculas( )
     {
-
+    	Map<String,String> nuevoMapa = new HashMap<String,String>();
+    	Iterator<Map.Entry<String,String>> iterador = this.mapaCadenas.entrySet().iterator();
+    	while (iterador.hasNext()) {
+    		Map.Entry<String, String> entrada = iterador.next();
+    		String llave = entrada.getKey().toUpperCase();
+    		nuevoMapa.put(llave, entrada.getValue());
+    	}
+    	this.mapaCadenas = nuevoMapa;
     }
 
     /**
@@ -151,7 +193,15 @@ public class SandboxMapas
      */
     public boolean compararValores( String[] otroArreglo )
     {
-        return false;
+    	boolean iguales = true;
+    	int i = 0;
+    	while (iguales == true && i < otroArreglo.length) {
+    		if (!this.mapaCadenas.containsValue(otroArreglo[i])) {
+    			iguales = false;
+    		}
+    		i += 1;
+    	}
+        return iguales;
     }
 
 }
